@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Joi = require('joi');
-const {Genre} = require('../database');
+const {Genre, validateGenre} = require('../models/genres.js');
 //models
 
 
@@ -29,7 +28,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { error } = validateGenre(req);
+  const { error } = validateGenre(req.body);
   if(error){
     return res.status(400).send(error.details[0].message);
   }
@@ -57,11 +56,5 @@ router.delete('/:id', async (req, res) => {
   res.send(result);
 });
 
-function validateGenre(genre){
-  const schema = {
-    name: Joi.string().required()
-  }
-  return Joi.validate(genre, schema);
-}
 
 module.exports = router;

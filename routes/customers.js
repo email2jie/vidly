@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Joi = require('joi');
-const {Customer} = require('../database');
+const {Customer, validateCustomer} = require('../models/customer.js');
 
 router.get('/', async (req, res) => {
   const result = await Customer.find();
@@ -61,13 +60,5 @@ router.delete('/:id', async (req, res) => {
   res.send(result);
 });
 
-function validateCustomer(customer){
-  const schema = {
-    name: Joi.string().max(255).required(),
-    phone: Joi.string().max(255).required(),
-    isGold: Joi.boolean()
-  }
-  return Joi.validate(customer, schema);
-}
 
 module.exports = router;
